@@ -20,9 +20,17 @@ public class UserDAO implements CrudDAO<User> {
         int n = 0;
 
         try {
-            PreparedStatement ps = con.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?)");
-            ps.setString(1, obj.getUsername());
-            ps.setString(2, obj.getPassword());
+            PreparedStatement ps = con.prepareStatement("INSERT INTO users (firstname, lastname, username, password, cart_id, street, city, state, zipcode, country) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setString(1, obj.getFirstName());
+            ps.setString(2, obj.getLastName());
+            ps.setString(3, obj.getUsername());
+            ps.setString(4, obj.getPassword());
+            ps.setInt(5, obj.getCart_id());
+            ps.setString(6, obj.getStreet());
+            ps.setString(7, obj.getCity());
+            ps.setString(8, obj.getState());
+            ps.setString(9, obj.getZipcode());
+            ps.setString(10, obj.getCountry());
             n = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

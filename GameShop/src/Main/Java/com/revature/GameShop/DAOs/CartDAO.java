@@ -23,14 +23,14 @@ public class CartDAO implements CrudDAO<Cart> {
         int n = 0;
 
         try{
-            PreparedStatement ps = con.prepareStatement("INSERT INTO products (id, totalprice, product_id, shippingaddress_id, user_id) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            ps.setString(1, obj.getTotalPrice());
-            ps.setInt(2, obj.getCart_id());
-            ps.setInt(3, obj.getUsers_id());
-            ps.setInt(4, obj.getProduct_id());
-            ps.setInt(5, obj.getShippingAddress_id());
+            PreparedStatement ps = con.prepareStatement("INSERT INTO cart (product_id, users_id) VALUES (?, ?)");
+            //ps.setInt(1, obj.getTotalPrice());
+//            ps.setInt(2, obj.getCart_id());
+            ps.setInt(1, obj.getUsers_id());
+            ps.setInt(2, obj.getProduct_id());
+            //ps.setInt(3, obj.getShippingAddress_id());
 
-            //NOTE! THIS GAMESHOP ID IS LOOKING DIFFERENT FROM THE ONE IN REVIEW DAO! BE WARY!!!!
+
 
             n = ps.executeUpdate();
         } catch (SQLException e){
@@ -73,7 +73,7 @@ public class CartDAO implements CrudDAO<Cart> {
         List<Cart> cartList = new ArrayList<>();
 
         try{
-            PreparedStatement ps = con.prepareStatement("SELECT * FROM cart WHERE users_id = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM cart WHERE cart_id = ?");
             ps.setInt(1, id);
 
             ResultSet rs = ps.executeQuery();
@@ -82,8 +82,8 @@ public class CartDAO implements CrudDAO<Cart> {
                 Cart cart = new Cart();
 
                 cart.setId(rs.getInt("id"));
-                cart.setTotalPrice(rs.getString("totalprice"));
-                cart.setCart_id(rs.getInt("cart_id"));
+                //cart.setTotalPrice(rs.getInt("totalprice"));
+               // cart.setCart_id(rs.getInt("cart_id"));
                 cart.setProduct_id(rs.getInt("product_id"));
                 cart.setShippingAddress_id(rs.getInt("shippingaddress_id"));
                 cart.setUsers_id(rs.getInt("users_id"));
@@ -108,8 +108,8 @@ public class CartDAO implements CrudDAO<Cart> {
             while (rs.next()) {
                 Cart cart = new Cart();
 
-                cart.setCart_id(rs.getInt("id"));
-                cart.setTotalPrice(rs.getString("totalprice"));
+                //cart.setCart_id(rs.getInt("id"));
+                //cart.setTotalPrice(rs.getInt("totalprice"));
                 cart.setProduct_id(rs.getInt("product_id"));
                 cart.setShippingAddress_id(rs.getInt("shippingaddress_id"));
                 cart.setUsers_id(rs.getInt("users_id"));

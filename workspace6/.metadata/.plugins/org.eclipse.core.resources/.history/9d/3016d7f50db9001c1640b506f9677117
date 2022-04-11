@@ -1,0 +1,16 @@
+insert into gameshops values (1, 'Gamestop', 'Plaistow', 'NH');
+insert into gameshops values (2, 'Gamestop', 'Salem', 'NH');
+insert into gameshops values (3, 'Amazon', 'Seattle', 'WA');
+insert into gameshops values (4, 'JList', 'Isesaki, Gunma', 'Japan');
+
+
+insert into reviews values (1, 3, 'Good location', 1);
+insert into reviews values (2, 2, 'Staff was a bit rude', 2);
+insert into reviews values (3, 4, 'Fast delivery, good service', 3);
+insert into reviews values (4, 5, 'Great service, a lot of personality', 4);
+
+
+insert into products values (1, 'PS5', 'Never In Stock', '$499.99', 0, 1, 'Hi.', 'Hello,');
+insert into products values (2, 'Xbox One', 'In Stock', '$599.99', 10, 2,  'Hi.', 'Hello,');
+insert into products values (3, 'Nintendo Switch', 'In Stock', '$299.99', 20, 1,  'Hi.', 'Hello,');
+insert into products values (4, 'Elden Ring', 'In Stock', '$59.99', 10, 3,  'Hi.', 'Hello,');

@@ -1,0 +1,189 @@
+drop table if exists reviews;
+drop table if exists products;
+drop table if exists gameshops;
+drop table if exists shippingaddress;
+drop table if exists customer;
+drop table if exists billingaddress;
+drop table if exists salesorder;
+drop table if exists cart;
+drop table if exists pastorders;
+
+
+drop table if exists cartitem;
+drop table if exists authorities;
+
+create table gameshops(
+	id serial,
+	name varchar,
+	city varchar, 
+	state varchar,
+
+	constraint pk_gameshops_id
+	primary key(id)
+);
+
+create table reviews(
+	id serial,
+	rating varchar,
+	message varchar,
+	username varchar,
+	gameshop_id int,
+	user_id int,
+	
+	constraint pk_reviews_id
+	primary key(id),
+	
+	constraint fk_gameshops_id
+	foreign key (gameshop_id) references gameshops(id),
+	
+	constraint fk_users_id
+	foreign key (user_id) references users(id)
+);
+
+create table products(
+	id serial,
+	name varchar,
+	instock varchar,
+	price varchar,
+	gameshop_id int,
+	description varchar,
+	manufacturer varchar,
+	
+	constraint pk_products_id
+	primary key(id),
+	
+	constraint fk_gameshops_id
+	foreign key (gameshop_id) references gameshops(id)
+);
+
+create table customer(
+	id serial,
+	firstName varchar,
+	lastName varchar,
+	customerPhone varchar,
+	shippingAddress_id int,
+	billingAddress_id int,
+	user_id varchar,
+	cart_id int,
+	
+	constraint pk_customer_id
+	primary key(id),
+	
+	constraint fk_gameshops_id
+	foreign key (shippingAddress_id) references shippingaddress(id),
+	
+	constraint fk_billingAddress_id 
+	foreign key (billingAddress_id) references billingAddress(id),
+	
+	constraint fk_users_id
+	foreign key (user_id) references users(id),
+	
+	constraint fk_cart_id 
+	foreign key (cart_id) references cart(id)
+
+);
+
+create table billingaddress(
+	id serial,
+	address varchar,
+	city varchar,
+	state varchar,
+	zipcode varchar,
+	country varchar,
+	
+	constraint pk_billingaddress_id 
+	primary key(id)
+);
+
+create table shippingaddress(
+	id serial,
+	address varchar,
+	city varchar,
+	state varchar,
+	zipcode varchar,
+	country varchar,
+	
+	constraint pk_shippingaddress_id
+	primary key (id)
+);
+
+create table salesorder(
+	id serial,
+	cart_id int,
+	customer_id int,
+	shippingAddress_id int,
+	billingAddress_id int,
+	
+	constraint pk_salesorder_id
+	primary key(id),
+	
+	constraint fk_cart_id 
+	foreign key (cart_id) references cart(id),
+	
+	constraint fk_customer_id
+	foreign key (customer_id) references customer(id),
+	
+	constraint fk_shippingAddress_id
+	foreign key (shippingAddress_id) references shippingaddress(id),
+	
+	constraint fk_billingAddress_id
+	foreign key (billingAddress_id) references billingaddress(id)
+);
+
+create table cart(
+	id serial,
+	totalPrice varchar,
+
+	constraint pk_cart_id 
+	primary key(id)
+
+);
+
+create table pastorders(
+	id serial,
+	name varchar,
+	price int,
+	quantity int,
+	product_id int,
+	
+	constraint pk_pastorders_id
+	primary key(id),
+	
+	constraint fk_product_id
+	foreign key (product_id) references products(id)
+);
+
+create table users(
+	id serial,
+	password varchar,
+	username varchar,
+	
+	constraint pk_users_id
+	primary key(id)
+);
+
+create table cartitem(
+	id serial,
+	quantity int,
+	price int,
+	cart_id int,
+	product_id int,
+	
+	constraint pk_cartitem_id
+	primary key(id),
+	
+	constraint fk_cart_id
+	foreign key (cart_id) references cart(id),
+	
+	constraint fk_product_id
+	foreign key (product_id) references products(id)
+);
+
+create table authorities(
+	id serial,
+	
+	primary key(id)
+
+);
+
+

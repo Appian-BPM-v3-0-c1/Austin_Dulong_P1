@@ -57,6 +57,8 @@ public class loginMenu implements IMenu {
         String state = "";
         String zipcode = "";
         String country = "";
+        String firstname = "";
+        String lastname = "" ;
 
         System.out.println("\nCreating account...");
 
@@ -107,35 +109,41 @@ public class loginMenu implements IMenu {
                 userService.getUserDAO().save(user);
 
                 System.out.println("Account created succesfully!");
-            }
-            while (true) {
+
+                System.out.println("Please add first name!");
+                firstname = scan.next();
+                user.setFirstName(firstname);
+
+                System.out.println("Please add last name!");
+                lastname = scan.next();
+                user.setLastName(lastname);
+
                 System.out.println("Please add billing and shipping address!");
                 address = scan.next();
-                break;
-            }
 
-            while (true) {
+                user.setStreet(address);
+
                 System.out.println("Please enter billing and shipping state!");
                 state = scan.next();
-                break;
-            }
-            while (true) {
+
+                user.setState(state);
 
                 System.out.println("Please add billing and shipping city!");
                 city = scan.next();
-                break;
-            }
-            while (true) {
+
+                user.setCity(city);
+
 
                 System.out.println("Please enter billing and shipping zipcode!");
                 zipcode = scan.next();
-                break;
-            }
-            while (true) {
+
+                user.setZipcode(zipcode);
+
 
                 System.out.println("Please enter billing and shipping country!");
                 country = scan.next();
-                break;
+                user.setCountry(country);
+
             }
 
 
@@ -150,7 +158,7 @@ public class loginMenu implements IMenu {
             System.out.print("\nEnter: ");
 
             if (scan.next().charAt(0) == 'y') {
-                userService.getUserDAO().save(shippingaddress);
+                userService.getUserDAO().save(user);
 
                 System.out.println("Account created succesfully!");
                 break;

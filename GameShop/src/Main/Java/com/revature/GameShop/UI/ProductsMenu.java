@@ -1,4 +1,4 @@
-package com.revature.GameShop.UI;
+/*package com.revature.GameShop.UI;
 
 import com.revature.GameShop.Modles.Products;
 import com.revature.GameShop.Modles.GameShop;
@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class ProductsMenu implements IMenu {
+
     private final User user;
     private final GameShop gameshop;
     private final ProductsService productservice;
@@ -142,3 +143,4 @@ public class ProductsMenu implements IMenu {
 
     }
 }
+*/

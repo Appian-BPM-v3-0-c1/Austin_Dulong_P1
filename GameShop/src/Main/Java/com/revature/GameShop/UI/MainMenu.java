@@ -1,9 +1,14 @@
 package com.revature.GameShop.UI;
 
+import com.revature.GameShop.DAOs.CartDAO;
 import com.revature.GameShop.DAOs.GameShopDAO;
+import com.revature.GameShop.DAOs.ProductsDAO;
 import com.revature.GameShop.DAOs.ReviewDAO;
+import com.revature.GameShop.Modles.GameShop;
 import com.revature.GameShop.Modles.User;
+import com.revature.GameShop.Services.CartServices;
 import com.revature.GameShop.Services.GameShopServices;
+import com.revature.GameShop.Services.ProductsService;
 import com.revature.GameShop.Services.ReviewService;
 
 import java.util.Scanner;
@@ -32,7 +37,7 @@ public class MainMenu implements IMenu {
 
             switch (input) {
                 case '1':
-                    new GameShopMenu(new GameShopServices(new GameShopDAO())).start();
+                    new GameShopMenu(new GameShopServices(new GameShopDAO()), new User(), new GameShop(), new ProductsService(new ProductsDAO()), new CartServices(new CartDAO())).start();
                     break;
                 case '2':
                     new ReviewMenu(user, new ReviewService(new ReviewDAO(), new GameShopDAO())).start();

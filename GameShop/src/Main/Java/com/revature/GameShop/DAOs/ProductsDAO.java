@@ -4,10 +4,7 @@ import com.revature.GameShop.Modles.User;
 import com.revature.GameShop.connection.DatabaseConnection;
 import com.revature.GameShop.Modles.Products;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +36,33 @@ public class ProductsDAO implements CrudDAO<Products> {
 
     @Override
     public List<Products> findAll() {
-        return null;
+        List<Products> products = new ArrayList<>();
+        try{
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM products");
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                Products product = new Products();
+
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setInstock(rs.getString("instock"));
+                product.setPrice(rs.getString("price"));
+                product.setQuantity(rs.getInt("quantity"));
+                product.setDescription(rs.getString("description"));
+                product.setManufacturer(rs.getString("manufacturer"));
+                product.setGameshop_id(rs.getInt("gameshop_id"));
+
+                products.add(product);
+            }
+
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return products;
+
     }
 
     @Override
