@@ -23,11 +23,11 @@ public class CartDAO implements CrudDAO<Cart> {
         int n = 0;
 
         try{
-            PreparedStatement ps = con.prepareStatement("INSERT INTO cart (product_id, users_id) VALUES (?, ?)");
+            PreparedStatement ps = con.prepareStatement("INSERT INTO carts (product_id, user_id) VALUES (?, ?)");
             //ps.setInt(1, obj.getTotalPrice());
 //            ps.setInt(2, obj.getCart_id());
-            ps.setInt(1, obj.getUsers_id());
-            ps.setInt(2, obj.getProduct_id());
+            ps.setInt(1, obj.getProduct_id());
+            ps.setInt(2, obj.getUsers_id());
             //ps.setInt(3, obj.getShippingAddress_id());
 
 

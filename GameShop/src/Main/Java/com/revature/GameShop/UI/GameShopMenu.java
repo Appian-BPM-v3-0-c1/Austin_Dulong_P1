@@ -20,16 +20,20 @@ public class GameShopMenu implements IMenu {
     private final GameShop gameshop;
     private final ProductsService productservice;
     private final CartServices cartService;
+    private final Cart cart;
     CrudDAO<Products> productsCrudDAO = new ProductsDAO();
     Scanner scan = new Scanner(System.in);
     int productX;
 
-    public GameShopMenu(GameShopServices gameShopServices, User user, GameShop gameshop, ProductsService productservice, CartServices cartService) {
+
+    public GameShopMenu(GameShopServices gameShopServices, User user, GameShop gameshop, ProductsService productservice, CartServices cartService, Cart cart) {
         this.gameShopServices = gameShopServices;
         this.user = user;
         this.gameshop = gameshop;
         this.productservice = productservice;
         this.cartService = cartService;
+        this.cart = cart;
+
 
         Products product = new Products();
         Scanner scan = new Scanner(System.in);
@@ -40,6 +44,7 @@ public class GameShopMenu implements IMenu {
         char input = ' ';
         boolean exit = false;
         Scanner scan = new Scanner(System.in);
+        System.out.println(user.getId());
 
 
         while (!exit) {
@@ -164,7 +169,6 @@ public class GameShopMenu implements IMenu {
     }
 
     public void viewProducts() {
-        Cart cart = new Cart();
         int input = 0;
 
         List<Products> products = productservice.getProductsDAO().findAll();
@@ -240,6 +244,7 @@ public class GameShopMenu implements IMenu {
 
 
         Products selectedProduct = product;
+        System.out.println(product.getId());
         System.out.println(selectedProduct.getId());
 
 

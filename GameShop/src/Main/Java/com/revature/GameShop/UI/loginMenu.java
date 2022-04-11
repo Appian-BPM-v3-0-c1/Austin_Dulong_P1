@@ -1,6 +1,7 @@
 package com.revature.GameShop.UI;
 
 import com.revature.GameShop.Modles.Address;
+import com.revature.GameShop.Modles.Cart;
 import com.revature.GameShop.Modles.User;
 import com.revature.GameShop.Services.UserService;
 
@@ -15,6 +16,7 @@ public class loginMenu implements IMenu {
 
     Scanner scan = new Scanner(System.in);
     User user = new User();
+    Cart cart = new Cart();
     Address shippingaddress = new Address();
 
     @Override
@@ -177,7 +179,8 @@ public class loginMenu implements IMenu {
 
                 if (userService.isValidLogin(user)) {
                     user.setId(userService.getUserDAO().getUserId(user.getUsername()));
-                    new MainMenu(user).start();
+                    System.out.println(user.getId());
+                    new MainMenu(user, cart).start();
                     break;
                 } else {
                     System.out.println("\nInvalid login");

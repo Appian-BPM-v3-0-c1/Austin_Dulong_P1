@@ -4,6 +4,7 @@ import com.revature.GameShop.DAOs.CartDAO;
 import com.revature.GameShop.DAOs.GameShopDAO;
 import com.revature.GameShop.DAOs.ProductsDAO;
 import com.revature.GameShop.DAOs.ReviewDAO;
+import com.revature.GameShop.Modles.Cart;
 import com.revature.GameShop.Modles.GameShop;
 import com.revature.GameShop.Modles.User;
 import com.revature.GameShop.Services.CartServices;
@@ -15,9 +16,11 @@ import java.util.Scanner;
 
 public class MainMenu implements IMenu {
     private User user;
+    private Cart cart;
 
-    public MainMenu(User user) {
+    public MainMenu(User user, Cart cart) {
         this.user = user;
+        this.cart = cart;
     }
 
    @Override
@@ -25,6 +28,7 @@ public class MainMenu implements IMenu {
         char input = ' ';
         boolean exit = false;
         Scanner scan = new Scanner(System.in);
+
 
         while (!exit) {
             System.out.println("\nWelcome to the game shop system!");
@@ -37,7 +41,7 @@ public class MainMenu implements IMenu {
 
             switch (input) {
                 case '1':
-                    new GameShopMenu(new GameShopServices(new GameShopDAO()), new User(), new GameShop(), new ProductsService(new ProductsDAO()), new CartServices(new CartDAO())).start();
+                    new GameShopMenu(new GameShopServices(new GameShopDAO()), user, new GameShop(), new ProductsService(new ProductsDAO()), new CartServices(new CartDAO()), cart).start();
                     break;
                 case '2':
                     new ReviewMenu(user, new ReviewService(new ReviewDAO(), new GameShopDAO())).start();
