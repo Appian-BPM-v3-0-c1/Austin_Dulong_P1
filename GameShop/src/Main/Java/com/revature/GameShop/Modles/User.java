@@ -12,11 +12,12 @@ public class User {
     private String state;
     private String zipcode;
     private String country;
+    private Boolean adminis;
 
     public User() {
     }
 
-    public User(int id, String firstName, String lastName, String username, String password, int cart_id, String street, String city, String state, String zipcode, String country) {
+    public User(int id, String firstName, String lastName, String username, String password, int cart_id, String street, String city, String state, String zipcode, String country, boolean adminis) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -28,6 +29,7 @@ public class User {
         this.state = state;
         this.zipcode = zipcode;
         this.country = country;
+        this.adminis = adminis;
     }
 
     public int getId() {
@@ -118,6 +120,14 @@ public class User {
         this.country = country;
     }
 
+    public Boolean getAdminis() {
+        return adminis;
+    }
+
+    public void setAdminis(Boolean adminis) {
+        this.adminis = adminis;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -132,6 +142,7 @@ public class User {
                 ", state='" + state + '\'' +
                 ", zipcode='" + zipcode + '\'' +
                 ", country='" + country + '\'' +
+                ", adminis='" + adminis + '\'' +
                 '}';
     }
 }

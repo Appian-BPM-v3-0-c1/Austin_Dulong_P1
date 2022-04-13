@@ -31,7 +31,7 @@ public class GameDAO implements CrudDAO<Game> {
     }
 
     @Override
-    public User findById(int id) {
+    public Game findById(int id) {
         return null;
     }
 

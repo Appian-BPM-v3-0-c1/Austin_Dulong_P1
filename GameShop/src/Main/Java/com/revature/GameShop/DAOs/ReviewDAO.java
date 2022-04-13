@@ -47,7 +47,7 @@ public class ReviewDAO implements CrudDAO<Reviews> {
     }
 
     @Override
-    public User findById(int id) {
+    public Reviews findById(int id) {
         return null;
     }
 

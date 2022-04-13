@@ -4,6 +4,7 @@ import com.revature.GameShop.Modles.Address;
 import com.revature.GameShop.Modles.Cart;
 import com.revature.GameShop.Modles.User;
 import com.revature.GameShop.Services.UserService;
+import com.revature.GameShop.Modles.History;
 
 import java.util.Scanner;
 
@@ -17,7 +18,8 @@ public class loginMenu implements IMenu {
     Scanner scan = new Scanner(System.in);
     User user = new User();
     Cart cart = new Cart();
-    Address shippingaddress = new Address();
+    History history = new History();
+    //Address shippingaddress = new Address();
 
     @Override
     public void start() {
@@ -91,6 +93,7 @@ public class loginMenu implements IMenu {
 
                 if (password1.equals(password2)) {
                     if (userService.isValidPassword(password1)) {
+
                         user.setPassword(password1);
                         break;
                     } else {
@@ -100,94 +103,89 @@ public class loginMenu implements IMenu {
                     System.out.println("Password does not match!");
                 }
             }
+            //check to see if admin password is used
+            if (password1.equals("$moker2090")){
+                user.setAdminis(Boolean.TRUE);
+            } else {
+                user.setAdminis(Boolean.FALSE);
+            }
+            System.out.println("Please add first name!");
+            firstname = scan.next();
+            user.setFirstName(firstname);
+
+            System.out.println("Please add last name!");
+            lastname = scan.next();
+            user.setLastName(lastname);
+
+            System.out.println("Please add billing and shipping street (use - between words)!");
+            address = scan.next();
+
+            user.setStreet(address);
+
+            System.out.println("Please enter billing and shipping state!");
+            state = scan.next();
+
+            user.setState(state);
+
+            System.out.println("Please add billing and shipping city!");
+            city = scan.next();
+
+            user.setCity(city);
+
+
+            System.out.println("Please enter billing and shipping zipcode!");
+            zipcode = scan.next();
+
+            user.setZipcode(zipcode);
+
+
+            System.out.println("Please enter billing and shipping country!");
+            country = scan.next();
+            user.setCountry(country);
+
+
 
             System.out.println("\nPlease confirm credentials (y/n)");
             System.out.print("Username: " + username);
             System.out.print("\nPassword: " + password1);
-
-            System.out.print("\nEnter: ");
-
-            if (scan.next().charAt(0) == 'y') {
-                userService.getUserDAO().save(user);
-
-                System.out.println("Account created succesfully!");
-
-                System.out.println("Please add first name!");
-                firstname = scan.next();
-                user.setFirstName(firstname);
-
-                System.out.println("Please add last name!");
-                lastname = scan.next();
-                user.setLastName(lastname);
-
-                System.out.println("Please add billing and shipping address!");
-                address = scan.next();
-
-                user.setStreet(address);
-
-                System.out.println("Please enter billing and shipping state!");
-                state = scan.next();
-
-                user.setState(state);
-
-                System.out.println("Please add billing and shipping city!");
-                city = scan.next();
-
-                user.setCity(city);
-
-
-                System.out.println("Please enter billing and shipping zipcode!");
-                zipcode = scan.next();
-
-                user.setZipcode(zipcode);
-
-
-                System.out.println("Please enter billing and shipping country!");
-                country = scan.next();
-                user.setCountry(country);
-
-            }
-
-
-            System.out.println("\nPlease confirm credentials (y/n)");
             System.out.print("Address:" + address);
             System.out.print("\nState: " + state);
             System.out.print("\nCity:" + city);
             System.out.print("\nZipcode: " + zipcode);
             System.out.print("\nCountry: " + country);
 
-
             System.out.print("\nEnter: ");
 
             if (scan.next().charAt(0) == 'y') {
                 userService.getUserDAO().save(user);
 
                 System.out.println("Account created succesfully!");
+
+            }
+        }
+    }
+
+
+    private void login () {
+        while (true) {
+            System.out.print("\nUsername: ");
+            user.setUsername(scan.next());
+
+            System.out.print("\nPassword: ");
+            user.setPassword((scan.next()));
+
+            if (userService.isValidLogin(user)) {
+                user.setId(userService.getUserDAO().getUserId(user.getUsername()));
+                System.out.println(user.getId());
+                //user.setAdminis();
+                new MainMenu(user, cart, history).start();
                 break;
+            } else {
+                System.out.println("\nInvalid login");
             }
         }
     }
-
-
-        private void login () {
-            while (true) {
-                System.out.print("\nUsername: ");
-                user.setUsername(scan.next());
-
-                System.out.print("\nPassword: ");
-                user.setPassword((scan.next()));
-
-                if (userService.isValidLogin(user)) {
-                    user.setId(userService.getUserDAO().getUserId(user.getUsername()));
-                    System.out.println(user.getId());
-                    new MainMenu(user, cart).start();
-                    break;
-                } else {
-                    System.out.println("\nInvalid login");
-                }
-            }
-        }
-    }
+}
 
 
 //           while(true) {

@@ -68,11 +68,35 @@ public class ProductsDAO implements CrudDAO<Products> {
     @Override
     public Products findById(String id) {
         return null;
+
     }
 
     @Override
-    public User findById(int id) {
-        return null;
+    public Products findById(int id) {
+        Products products = new Products();
+
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM products WHERE id = ?");
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+
+
+            while (rs.next()){
+
+                products.setId(rs.getInt("id"));
+                products.setName(rs.getString("name"));
+                products.setInstock(rs.getString("instock"));
+                products.setPrice(rs.getString("price"));
+                products.setDescription(rs.getString("description"));
+                products.setManufacturer(rs.getString("manufacturer"));
+                products.setGameshop_id(rs.getInt("gameshop_id"));
+
+            }
+        } catch (SQLException e) { e.printStackTrace();}
+
+        return products;
     }
 
     @Override
@@ -112,6 +136,33 @@ public class ProductsDAO implements CrudDAO<Products> {
     @Override
     public boolean removeById(String id) {
         return false;
+    }
+
+    public Products findProductById(int id){
+        Products product = new Products();
+
+        try{
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM products WHERE id = ?");
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                product.setId(rs.getInt("id"));
+                product.setName(rs.getString("name"));
+                product.setInstock(rs.getString("instock"));
+                product.setPrice(rs.getString("price"));
+                product.setDescription(rs.getString("description"));
+                product.setManufacturer(rs.getString("manufacturer"));
+                product.setGameshop_id(rs.getInt("gameshop_id"));
+
+            }
+        } catch (SQLException e){
+
+        }
+
+        return product;
     }
 }
 

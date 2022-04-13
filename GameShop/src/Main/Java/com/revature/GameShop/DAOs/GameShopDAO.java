@@ -68,7 +68,7 @@ public class GameShopDAO implements CrudDAO<GameShop> {
     }
 
     @Override
-    public User findById(int id) {
+    public GameShop findById(int id) {
         return null;
     }
 
