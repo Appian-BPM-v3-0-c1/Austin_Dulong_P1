@@ -7,18 +7,20 @@ public class History {
     private int quantity;
     private int products_id;
     private int users_id;
+    private String datetime;
 
     public History() {
 
     }
 
-    public History(int id, String name, int price, int quantity, int products_id, int users_id) {
+    public History(int id, String name, int price, int quantity, int products_id, int users_id, String datetime) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.quantity = quantity;
         this.products_id = products_id;
         this.users_id = users_id;
+        this.datetime=datetime;
     }
 
     public int getId() {
@@ -69,6 +71,14 @@ public class History {
         this.users_id = users_id;
     }
 
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
+
     @Override
     public String toString() {
         return "History{" +
@@ -78,6 +88,7 @@ public class History {
                 ", quantity=" + quantity +
                 ", products_id=" + products_id +
                 ", users_id=" + users_id +
+                ", datetime=" + datetime +
                 '}';
     }
 }

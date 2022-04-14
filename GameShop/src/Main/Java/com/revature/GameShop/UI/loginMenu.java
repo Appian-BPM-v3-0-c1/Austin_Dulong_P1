@@ -19,6 +19,7 @@ public class loginMenu implements IMenu {
     User user = new User();
     Cart cart = new Cart();
     History history = new History();
+    String username;
     //Address shippingaddress = new Address();
 
     @Override
@@ -103,12 +104,7 @@ public class loginMenu implements IMenu {
                     System.out.println("Password does not match!");
                 }
             }
-            //check to see if admin password is used
-            if (password1.equals("$moker2090")){
-                user.setAdminis(Boolean.TRUE);
-            } else {
-                user.setAdminis(Boolean.FALSE);
-            }
+
             System.out.println("Please add first name!");
             firstname = scan.next();
             user.setFirstName(firstname);
@@ -167,6 +163,7 @@ public class loginMenu implements IMenu {
 
 
     private void login () {
+        User user = new User();
         while (true) {
             System.out.print("\nUsername: ");
             user.setUsername(scan.next());
@@ -175,9 +172,11 @@ public class loginMenu implements IMenu {
             user.setPassword((scan.next()));
 
             if (userService.isValidLogin(user)) {
-                user.setId(userService.getUserDAO().getUserId(user.getUsername()));
+                user = userService.getUserDAO().findByUsername(user.getUsername());
+
+                //user.setId(userService.getUserDAO().getUserId(user.getUsername()));
+
                 System.out.println(user.getId());
-                //user.setAdminis();
                 new MainMenu(user, cart, history).start();
                 break;
             } else {
@@ -208,3 +207,4 @@ public class loginMenu implements IMenu {
 //                System.out.println("Please enter billing and shipping country!");
 //                country = scan.next();
 //            }
+

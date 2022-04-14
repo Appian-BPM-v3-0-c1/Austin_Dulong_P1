@@ -5,6 +5,7 @@ import com.revature.GameShop.connection.DatabaseConnection;
 import com.revature.GameShop.DAOs.UserDAO;
 import com.revature.GameShop.Services.UserService;
 import com.revature.GameShop.UI.loginMenu;
+import java.util.Collections;
 
 import java.sql.Connection;
 

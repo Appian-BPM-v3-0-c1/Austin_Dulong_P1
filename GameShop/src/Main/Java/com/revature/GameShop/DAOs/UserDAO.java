@@ -132,4 +132,75 @@ public class UserDAO implements CrudDAO<User> {
 
         return id;
     }
+    public boolean getAdmin(boolean adminis){
+        boolean id = false;
+
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT (adminis) FROM users where adminis = ?");
+            ps.setBoolean(1, adminis);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                id = rs.getBoolean("adminis");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return id;
+
+    }
+
+    public User findByUsername(String username){
+
+        User user = new User();
+
+        try {
+            PreparedStatement ps = con.prepareStatement("SELECT * FROM users where username = ?");
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                user.setId(rs.getInt("id"));
+                user.setFirstName(rs.getString("firstname"));
+                user.setLastName(rs.getString("lastname"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setStreet(rs.getString("street"));
+                user.setCity(rs.getString("city"));
+                user.setState(rs.getString("state"));
+                user.setCountry(rs.getString("country"));
+                user.setZipcode(rs.getString("zipcode"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password"));
+                user.setAdminis(rs.getBoolean("adminis"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return user;
+
+    }
 }
+
+
+//private void existingUser() {
+//        User user = new User();
+//        while (true) {
+//            System.out.print("\nUsername: ");
+//            user.setUsername(scan.next());
+//
+//            System.out.print("\nPassword: ");
+//            user.setPassword((scan.next()));
+//
+//            if (userService.isValidLogin(user)) {
+//                user = userService.getUserDAO().findByUsername(user.getUsername());
+//                new MainMenu(new Cart(),new ItemService(new ItemDAO()),user).start();
+//                break;
+//            } else {
+//                System.out.println("\nInvalid login");
+//            }
+//        }
+//    }

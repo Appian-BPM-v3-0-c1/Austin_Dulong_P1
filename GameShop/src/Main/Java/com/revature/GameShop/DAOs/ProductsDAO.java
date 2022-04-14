@@ -25,7 +25,6 @@ public class ProductsDAO implements CrudDAO<Products> {
             ps.setString(5, obj.getManufacturer());
             ps.setInt(6, obj.getQuantity());
             ps.setInt(7, obj. getGameshop_id());
-            //NOTE! THIS GAMESHOP ID IS LOOKING DIFFERENT FROM THE ONE IN REVIEW DAO! BE WARY!!!!
 
             n = ps.executeUpdate();
         } catch (SQLException e){
@@ -164,6 +163,37 @@ public class ProductsDAO implements CrudDAO<Products> {
 
         return product;
     }
+
+    public int restockQuantity(int quantity){
+        int input = 0;
+
+        try {
+            PreparedStatement ps = con.prepareStatement("UPDATE products SET quantity = ? WHERE quantity = ?");
+            ps.setInt(1, quantity);
+        }catch (SQLException e){
+
+        }
+        return input;
+    }
+
+    public int takeFromQuantity(int oquantity, int nquantity){
+        int input = 0;
+
+        try{
+            PreparedStatement ps = con.prepareStatement("UPDATE products SET quantity = ? WHERE quantity = ?");
+            ps.setInt(1, oquantity);
+            ps.setInt(2, nquantity);
+
+
+
+
+        } catch (SQLException e){
+
+        }
+        return input;
+    }
+
+
 }
 
 

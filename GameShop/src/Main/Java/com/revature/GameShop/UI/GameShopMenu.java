@@ -19,7 +19,6 @@ public class GameShopMenu implements IMenu {
     private final ProductsService productservice;
     private final CartServices cartService;
     private final Cart cart;
-    private final History history;
     private final HistoryService historyService;
     CrudDAO<Products> productsCrudDAO = new ProductsDAO();
     Scanner scan = new Scanner(System.in);
@@ -33,12 +32,13 @@ public class GameShopMenu implements IMenu {
         this.productservice = productservice;
         this.cartService = cartService;
         this.cart = cart;
-        this.history = history;
+        // this.history = history;
         this.historyService = historyService;
 
 
         Products product = new Products();
         Scanner scan = new Scanner(System.in);
+        boolean admin = user.getAdminis();
     }
 
     //@Override
@@ -51,9 +51,12 @@ public class GameShopMenu implements IMenu {
         while (!exit) {
             System.out.println("\nWelcome to the game shop menu!");
             System.out.println("[1] List all game shops");
-            System.out.println("[2] Search game shop");
-            System.out.println("[3] Go to cart");
+            System.out.println("[2] Go to cart");
+            if (user.getAdminis() == true) {
+                System.out.println("[3] Restock Shops");
+            }
             System.out.println("[x] Exit");
+
 
             System.out.print("\nEnter: ");
             input = scan.next().charAt(0);
@@ -63,10 +66,12 @@ public class GameShopMenu implements IMenu {
                     viewAllGameShops();
                     break;
                 case '2':
-                    break;
-                case '3':
                     goToCart();
                     break;
+                case '3':
+                    if (user.getAdminis() == true) {
+                        restockStock();
+                    }
                 case 'x':
                     exit = true;
                     break;
@@ -157,7 +162,6 @@ public class GameShopMenu implements IMenu {
                 List<Products> prodList = productsCrudDAO.findAllById(gameShopList.get(input).getId());
 
                 /* printout the selected gameshop */
-                ;
 
 
                 for (Products prod : prodList) {
@@ -180,8 +184,10 @@ public class GameShopMenu implements IMenu {
         while (true) {
             System.out.println();
             for (int i = 0; i < products.size(); i++) {
-                System.out.println("[" + (i + 1) + "]" + products.get(i).getName() + ' ' + products.get(i).getPrice() + ' ' + products.get(i).getInstock() + ' '
-                        + "\n" + products.get(i).getDescription() + products.get(i).getManufacturer());
+                System.out.println("[" + (i + 1) + "]" + products.get(i).getName() + " Price: $" + products.get(i).getPrice() + " Number of Available Copies: " + products.get(i).getQuantity() +' ' + products.get(i).getInstock() + ' '
+                        + "\nDescription: " + products.get(i).getDescription() + products.get(i).getManufacturer());
+                System.out.println();
+
             }
             System.out.println("\nPick a product to add to your cart by inputting the number in []: ");
             input = scan.nextInt() - 1;
@@ -194,10 +200,24 @@ public class GameShopMenu implements IMenu {
                 product = products.get(input);
 
                 while (true) {
-                    System.out.println("\nEnter quantity: ");
+                    System.out.println("\nEnter quantity cannot exceed 2): ");
                     int quantity = scan.nextInt();
                     scan.nextLine();
-                    product.setQuantity(quantity);
+                    //product.setQuantity(quantity);
+
+                    productservice.getProductsDAO().takeFromQuantity(product.getQuantity(), quantity);
+                    for (int i = 0; i < products.size(); i++) {
+                        products.get(i).setQuantity(quantity);
+
+
+                    }
+                    //ADDED TO CART
+                    //System.out.println(product.getQuantity());
+                    //WHAT WE WANT TO ADD TO CART
+                    //System.out.println(quantity);
+
+
+
                     break;
                 }
 
@@ -255,12 +275,6 @@ public class GameShopMenu implements IMenu {
 
 
         cartService.getCartDAO().save(cart);
-
-        //cart.setQuantity();
-
-        //irrelevent. Decided to go about adding this stuff via view products
-
-
     }
 
     public void goToCart() {
@@ -274,22 +288,69 @@ public class GameShopMenu implements IMenu {
         }
 
 
-        //System.out.println("Inside your cart, you have: " + cart.getQuantity() + " " + cart.getName());
-
         System.out.println("Would you like to check out? (y/n)");
         if (scan.next().charAt(0) == 'y') {
 
             //saves to orderhistory
             System.out.println("Congratulations on your purchase!");
-            history.setProducts_id(cart.getProduct_id());
-            history.setName(cart.getName());
-            history.setQuantity(cart.getQuantity());
-            history.setUsers_id(cart.getUsers_id());
-            historyService.getHistoryDAO().save(history);
-            System.out.println(history);
+            for (int i = 0; i < carts.size(); i++) {
+
+                History history = new History();
+                history.setName(carts.get(i).getName());
+                history.setProducts_id(carts.get(i).getProduct_id());
+                history.setQuantity(carts.get(i).getQuantity());
+                history.setUsers_id(carts.get(i).getUsers_id());
+
+                history.setUsers_id(user.getId());
+
+                historyService.getHistoryDAO().save(history);
+            }
+
             cartService.getCartDAO().emptyById(user.getId());
             System.out.println("Cart has been emptied");
         } else {
+
+        }
+    }
+
+    public void restockStock() {
+        int input = 0;
+        List<GameShop> gameShopList = gameShopServices.getCrudDAO().findAll();
+
+        /* loop through gameshop list and print out the gameshop */
+        System.out.println();
+        for (int i = 0; i < gameShopList.size(); i++) {
+            System.out.println("[" + (i + 1) + "] " + gameShopList.get(i).getName());
+        }
+        while (true) {
+            System.out.print("\nSelect a gameshop to set as Restocked: ");
+
+
+            input = scan.nextInt() - 1;
+
+
+            if (input > gameShopList.size()) {
+                System.out.println("\nInvalid input");
+            } else {
+                System.out.println("Shop has been restocked");
+                break;
+            }
+
+        }
+
+
+    }
+    public void subtractor(){
+        int input = 0;
+        Scanner scan = new Scanner(System.in);
+        List<GameShop> gameShopList = gameShopServices.getCrudDAO().findAll();
+        List<Products> products = productsCrudDAO.findAllById(gameShopList.get(input).getId());
+        Products product = new Products();
+
+
+        for (int i = 0; i < products.size(); i++) {
+            System.out.println("[" + (i + 1) + "]" + products.get(i).getName() + ' ' + products.get(i).getPrice() + ' ' + products.get(i).getQuantity() +' ' + products.get(i).getInstock() + ' '
+                    + "\n" + products.get(i).getDescription() + products.get(i).getManufacturer());
 
         }
     }

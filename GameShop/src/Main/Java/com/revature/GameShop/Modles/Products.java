@@ -104,6 +104,7 @@ public class Products {
                 ", gameshop_id=" + gameshop_id +
                 ", description='" + description + '\'' +
                 ", manufacturer='" + manufacturer + '\'' +
+                ", quantity='" + quantity + '\'' +
                 '}';
     }
 }
