@@ -78,6 +78,7 @@ public class Products {
         this.description = description;
     }
 
+
     public String getManufacturer() {
         return manufacturer;
     }

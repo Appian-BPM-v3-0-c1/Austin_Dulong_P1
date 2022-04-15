@@ -8,6 +8,7 @@ import com.revature.GameShop.Services.GameShopServices;
 import com.revature.GameShop.Services.HistoryService;
 import com.revature.GameShop.Services.ProductsService;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -189,7 +190,7 @@ public class GameShopMenu implements IMenu {
                 System.out.println();
 
             }
-            System.out.println("\nPick a product to add to your cart by inputting the number in []: ");
+            System.out.println("\nPick a product to add to your cart by in-putting the number in []: ");
             input = scan.nextInt() - 1;
             scan.nextLine();
             productX = input;
@@ -200,34 +201,32 @@ public class GameShopMenu implements IMenu {
                 product = products.get(input);
 
                 while (true) {
-                    System.out.println("\nEnter quantity cannot exceed 2): ");
+                    int qty = product.getQuantity();
+                    System.out.println("\nEnter quantity (MAX "+ product.getQuantity() + ") ");
                     int quantity = scan.nextInt();
                     scan.nextLine();
-                    //product.setQuantity(quantity);
+                    if (quantity>qty){
+                        System.out.println("Invalid Input");
 
-                    productservice.getProductsDAO().takeFromQuantity(product.getQuantity(), quantity);
-                    for (int i = 0; i < products.size(); i++) {
-                        products.get(i).setQuantity(quantity);
+                    } else {
 
 
+                        productservice.getProductsDAO().takeFromQuantity(qty - quantity, product.getId());
+
+
+
+                        //ADDED TO CART
+                        //System.out.println(product.getQuantity());
+                        //WHAT WE WANT TO ADD TO CART
+                        //System.out.println(quantity);
+                        break;
                     }
-                    //ADDED TO CART
-                    //System.out.println(product.getQuantity());
-                    //WHAT WE WANT TO ADD TO CART
-                    //System.out.println(quantity);
-
-
-
-                    break;
                 }
-
                 System.out.println("\nPlease confirm decision(y/n)");
                 System.out.println(product);
 
-
                 if (scan.next().charAt(0) == 'y') {
                     addToCart(product, cart);
-
 
                     System.out.println("Added to cart!");
 
@@ -239,24 +238,6 @@ public class GameShopMenu implements IMenu {
         }
     }
 
-    public void viewCart() {
-
-        List<Cart> carts = cartService.getCartDAO().findCartById(user.getId());
-
-        for (Cart c : carts) {
-            System.out.println(productservice.getProductsDAO().findById(c.getId()));
-        }
-
-        System.out.print("\nWould you like to checkout? (y/n) ");
-        if (scan.next().charAt(0) == 'y') {
-
-            if (carts.isEmpty()) {
-                System.out.println("\nThere is nothing to checkout!");
-            } else {
-                System.out.println("blahblahblahblah");
-            }
-        }
-    }
 
 
     public void addToCart(Products product, Cart cart) {
@@ -297,13 +278,16 @@ public class GameShopMenu implements IMenu {
 
                 History history = new History();
                 history.setName(carts.get(i).getName());
+                System.out.println(carts.get(i).getName());
                 history.setProducts_id(carts.get(i).getProduct_id());
+                System.out.println(carts.get(i).getProduct_id());
                 history.setQuantity(carts.get(i).getQuantity());
                 history.setUsers_id(carts.get(i).getUsers_id());
 
                 history.setUsers_id(user.getId());
 
                 historyService.getHistoryDAO().save(history);
+                System.out.println(history);
             }
 
             cartService.getCartDAO().emptyById(user.getId());
@@ -315,45 +299,60 @@ public class GameShopMenu implements IMenu {
 
     public void restockStock() {
         int input = 0;
-        List<GameShop> gameShopList = gameShopServices.getCrudDAO().findAll();
 
-        /* loop through gameshop list and print out the gameshop */
-        System.out.println();
-        for (int i = 0; i < gameShopList.size(); i++) {
-            System.out.println("[" + (i + 1) + "] " + gameShopList.get(i).getName());
-        }
-        while (true) {
-            System.out.print("\nSelect a gameshop to set as Restocked: ");
-
-
-            input = scan.nextInt() - 1;
-
-
-            if (input > gameShopList.size()) {
-                System.out.println("\nInvalid input");
-            } else {
-                System.out.println("Shop has been restocked");
-                break;
-            }
-
-        }
-
-
-    }
-    public void subtractor(){
-        int input = 0;
-        Scanner scan = new Scanner(System.in);
-        List<GameShop> gameShopList = gameShopServices.getCrudDAO().findAll();
-        List<Products> products = productsCrudDAO.findAllById(gameShopList.get(input).getId());
+        List<Products> products = productservice.getProductsDAO().findAll();
         Products product = new Products();
 
+        while (true) {
+            System.out.println();
+            for (int i = 0; i < products.size(); i++) {
+                System.out.println("[" + (i + 1) + "]" + products.get(i).getName() + " Price: $" + products.get(i).getPrice() + " Number of Available Copies: " + products.get(i).getQuantity() +' ' + products.get(i).getInstock() + ' '
+                        + "\nDescription: " + products.get(i).getDescription() + products.get(i).getManufacturer());
+                System.out.println();
 
-        for (int i = 0; i < products.size(); i++) {
-            System.out.println("[" + (i + 1) + "]" + products.get(i).getName() + ' ' + products.get(i).getPrice() + ' ' + products.get(i).getQuantity() +' ' + products.get(i).getInstock() + ' '
-                    + "\n" + products.get(i).getDescription() + products.get(i).getManufacturer());
+            }
+            System.out.println("\nPick a product to restock: ");
+            input = scan.nextInt() - 1;
+            scan.nextLine();
+            productX = input;
 
+
+            if (input <= products.size()) {
+                product = products.get(input);
+
+                while (true) {
+                    System.out.println("Input amount to restock with:");
+                    int qty = product.getQuantity();
+                    int quantity = scan.nextInt();
+                    scan.nextLine();
+                    if (quantity>qty){
+                        System.out.println("Invalid Input");
+
+                    } else {
+
+
+
+                        productservice.getProductsDAO().takeFromQuantity(qty + quantity, product.getId());
+
+
+
+                        //ADDED TO CART
+                        //System.out.println(product.getQuantity());
+                        //WHAT WE WANT TO ADD TO CART
+                        //System.out.println(quantity);
+                        break;
+                    }
+                }
+
+
+                    System.out.println("Restocked");
+
+                    break;
+                }
+            }
         }
     }
-}
+
+
 
 

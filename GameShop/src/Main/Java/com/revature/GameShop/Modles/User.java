@@ -12,7 +12,7 @@ public class User {
     private String state;
     private String zipcode;
     private String country;
-    private Boolean adminis;
+    private Boolean adminis = false;
 
     public User() {
     }

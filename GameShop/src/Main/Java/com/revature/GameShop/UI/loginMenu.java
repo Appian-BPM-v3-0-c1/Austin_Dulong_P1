@@ -144,7 +144,7 @@ public class loginMenu implements IMenu {
             System.out.println("\nPlease confirm credentials (y/n)");
             System.out.print("Username: " + username);
             System.out.print("\nPassword: " + password1);
-            System.out.print("Address:" + address);
+            System.out.print("\nAddress:" + address);
             System.out.print("\nState: " + state);
             System.out.print("\nCity:" + city);
             System.out.print("\nZipcode: " + zipcode);
@@ -152,10 +152,14 @@ public class loginMenu implements IMenu {
 
             System.out.print("\nEnter: ");
 
+
             if (scan.next().charAt(0) == 'y') {
                 userService.getUserDAO().save(user);
 
                 System.out.println("Account created succesfully!");
+                login();
+                break;
+
 
             }
         }
@@ -174,9 +178,9 @@ public class loginMenu implements IMenu {
             if (userService.isValidLogin(user)) {
                 user = userService.getUserDAO().findByUsername(user.getUsername());
 
-                //user.setId(userService.getUserDAO().getUserId(user.getUsername()));
 
-                System.out.println(user.getId());
+
+
                 new MainMenu(user, cart, history).start();
                 break;
             } else {
