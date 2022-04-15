@@ -176,21 +176,21 @@ public class ProductsDAO implements CrudDAO<Products> {
         return input;
     }
 
-    public int takeFromQuantity(int oquantity, int nquantity){
-        int input = 0;
+    public int takeFromQuantity(int quantity, int productId){
+        int n = 0;
 
         try{
-            PreparedStatement ps = con.prepareStatement("UPDATE products SET quantity = ? WHERE quantity = ?");
-            ps.setInt(1, oquantity);
-            ps.setInt(2, nquantity);
+            PreparedStatement ps = con.prepareStatement("UPDATE products SET quantity = ? WHERE id = ?");
+            ps.setInt(1, quantity);
+            ps.setInt(2, productId);
 
 
-
+            n=ps.executeUpdate();
 
         } catch (SQLException e){
 
         }
-        return input;
+        return n;
     }
 
 
